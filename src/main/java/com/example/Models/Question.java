@@ -2,7 +2,7 @@ package com.example.Models;
 
 import jakarta.persistence.Entity;
 
-@Entity
+//@Entity
 public class Question {
 
 }

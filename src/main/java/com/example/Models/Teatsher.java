@@ -7,23 +7,18 @@ import jakarta.persistence.Id;
 import java.util.UUID;
 
 @Entity
-public class Topic {
+public class Teatsher {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    private String topic;
+    private String name;
     private String description;
-    private int level;
 
-    public Topic(UUID id, String topic, String description, int level) {
+    public Teatsher(UUID id, String name, String description) {
         this.id = id;
-        this.topic = topic;
+        this.name = name;
         this.description = description;
-        this.level = level;
-    }
-
-    public Topic() {
     }
 
     public UUID getId() {
@@ -34,12 +29,12 @@ public class Topic {
         this.id = id;
     }
 
-    public String getTopic() {
-        return topic;
+    public String getName() {
+        return name;
     }
 
-    public void setTopic(String topic) {
-        this.topic = topic;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
@@ -48,14 +43,6 @@ public class Topic {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
     }
 
 }

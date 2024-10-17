@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.example.Models.Teacher;
+import com.example.Models.Topic;
 import com.example.Models.OpenAiModels.ChatRequest;
 import com.example.Models.OpenAiModels.ChatRespons;
 
@@ -19,8 +21,12 @@ public class OpenAiService {
         this.restTemplate = restTemplate;
     }
 
-    public ChatRespons sendChatRespons(String prompt) {
-        ChatRequest chatRequest = new ChatRequest("gpt-4o", prompt, 1);
+    public ChatRespons sendQuestion(Topic topic, Teacher teacher) {
+        ChatRequest chatRequest = new ChatRequest("gpt-4o",
+                "Generera en " + topic.getTopic() + " fråga om " + topic.getDescription() + "med en svårighetsgrad på:"
+                        + topic.getLevel() + "av 10",
+                1,
+                teacher);
         ChatRespons respons = restTemplate.postForObject(openAiApiUrl, chatRequest, ChatRespons.class);
 
         return respons;

@@ -15,22 +15,51 @@ public class User {
     private UUID id;
     private String username;
     private String password;
+    private String name;
     private UUID subscription;
     private int score;
+    private String lastQuestion;
+    private String lastAnswer;
 
-    public User(UUID id, String username, String password, UUID subscription, int score) {
-        this.id = id;
+    public User(String username, String password, String name) {
         this.username = username;
         this.password = password;
-        this.subscription = subscription;
+        this.name = name;
+        /*         this.subscription = subscription;
         this.score = score;
+        this.lastQuestion = lastQuestion;
+        this.lastAnswer = lastAnswer; */
     }
 
     public User() {
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public UUID getId() {
         return id;
+    }
+
+    public String getLastQuestion() {
+        return lastQuestion;
+    }
+
+    public void setLastQuestion(String lastQuestion) {
+        this.lastQuestion = lastQuestion;
+    }
+
+    public String getLastAnswer() {
+        return lastAnswer;
+    }
+
+    public void setLastAnswer(String lastAnswer) {
+        this.lastAnswer = lastAnswer;
     }
 
     public String getUsername() {

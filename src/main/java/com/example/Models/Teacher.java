@@ -7,18 +7,19 @@ import jakarta.persistence.Id;
 import java.util.UUID;
 
 @Entity
-public class Teatsher {
+public class Teacher {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String name;
     private String description;
+    UUID topic;
 
-    public Teatsher(UUID id, String name, String description) {
-        this.id = id;
+    public Teacher(String name, String description, UUID topic) {
         this.name = name;
         this.description = description;
+        this.topic = topic;
     }
 
     public UUID getId() {
@@ -43,6 +44,14 @@ public class Teatsher {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public UUID getTopic() {
+        return topic;
+    }
+
+    public void setTopic(UUID topic) {
+        this.topic = topic;
     }
 
 }

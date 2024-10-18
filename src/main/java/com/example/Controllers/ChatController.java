@@ -7,8 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.Models.Teacher;
-import com.example.Models.Topic;
+import com.example.Models.Dtos.AnswerDto;
 import com.example.Models.Dtos.QuestionDto;
 import com.example.Models.OpenAiModels.ChatRespons;
 import com.example.Services.OpenAiService;
@@ -29,12 +28,12 @@ public class ChatController {
         return respons.getChoices().get(0).getMessage().getContent();
     }
 
-    /*     @PostMapping("/answer")
-    public String postAnswer(@RequestBody String prompt) {
-    
-        ChatRespons respons = openAiService.sendChatRespons(prompt);
-    
+    @PostMapping("/answer")
+    public String postAnswer(@RequestBody AnswerDto answer) {
+
+        ChatRespons respons = openAiService.sendAnswer(answer.getAnswer(), answer.getQuestion(), answer.getTeacher());
+
         return respons.getChoices().get(0).getMessage().getContent();
-    } */
+    }
 
 }

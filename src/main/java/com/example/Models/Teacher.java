@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.util.UUID;
+import java.util.List;
+import java.util.ArrayList;
 
 @Entity
 public class Teacher {
@@ -14,12 +16,12 @@ public class Teacher {
     private UUID id;
     private String name;
     private String description;
-    UUID topic;
+    List<UUID> topic;
 
-    public Teacher(String name, String description, UUID topic) {
+    public Teacher(String name, String description, List<UUID> topic) {
         this.name = name;
         this.description = description;
-        this.topic = topic;
+        this.topic = new ArrayList<UUID>();
     }
 
     public UUID getId() {
@@ -46,11 +48,11 @@ public class Teacher {
         this.description = description;
     }
 
-    public UUID getTopic() {
+    public List<UUID> getTopic() {
         return topic;
     }
 
-    public void setTopic(UUID topic) {
+    public void setTopic(List<UUID> topic) {
         this.topic = topic;
     }
 

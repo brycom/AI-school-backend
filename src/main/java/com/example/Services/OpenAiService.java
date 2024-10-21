@@ -38,7 +38,7 @@ public class OpenAiService {
     public ChatRespons sendAnswer(Answer answer, Question question, Teacher teacher) {
         ChatRequest chatRequest = new ChatRequest("gpt-4o",
                 "Bedöm svaret:" + answer.getAnswer()
-                        + " svara först om det är rätt eller fel. Ge sen en kort beskrivning om hur du hade kommit fram till svaret",
+                        + " svara först om det är rätt eller fel. Ge sen en kort beskrivning om hur du hade kommit fram till svaret max 30 ord",
                 1,
                 teacher);
         chatRequest.addMessage(new Message("assistant", question.getQuestion()));

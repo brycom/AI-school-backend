@@ -13,12 +13,14 @@ public class Topic {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String topic;
+    private String title;
     private String description;
     private int level;
 
-    public Topic(UUID id, String topic, String description, int level) {
+    public Topic(UUID id, String topic, String title, String description, int level) {
         this.id = id;
         this.topic = topic;
+        this.title = title;
         this.description = description;
         this.level = level;
     }
@@ -56,6 +58,14 @@ public class Topic {
 
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
 }

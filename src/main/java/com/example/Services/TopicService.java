@@ -1,5 +1,7 @@
 package com.example.Services;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.example.Models.Topic;
@@ -16,6 +18,10 @@ public class TopicService {
 
     public Topic addNewTopic(Topic topic) {
         return topicsRepository.save(topic);
+    }
+
+    public Iterable<Topic> getAllTopics() {
+        return topicsRepository.findAll();
     }
 
 }

@@ -1,6 +1,6 @@
 package com.example.Controllers;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
+/* import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,11 +20,12 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    @PostMapping("/newAccount")
+        @PostMapping("/newAccount")
     public String createAccount(@RequestBody User user) {
         accountService.createAccount(user);
-
+    
         return "Account created successfully!";
     }
 
 }
+ */

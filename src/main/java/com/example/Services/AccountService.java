@@ -15,7 +15,7 @@ public class AccountService {
     }
 
     public User createAccount(User user) {
-        if (userRepository.findByUsername(user.getUsername()).size() > 0) {
+        if (userRepository.findByUsername(user.getUsername()) != null) {
             throw new IllegalArgumentException("Username already in use: " + user.getUsername());
         }
 

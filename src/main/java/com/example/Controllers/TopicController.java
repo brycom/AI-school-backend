@@ -11,7 +11,7 @@ import com.example.Models.Topic;
 import com.example.Services.TopicService;
 
 @RestController
-@RequestMapping("/admin/topic")
+@RequestMapping("/topic")
 @CrossOrigin("*")
 public class TopicController {
 
@@ -21,7 +21,7 @@ public class TopicController {
         this.topicService = toppicService;
     }
 
-    @PostMapping("/newTopic")
+    @PostMapping("admin/newTopic")
     public String newTopic(@RequestBody Topic topic) {
         topicService.addNewTopic(topic);
         return "new topic added successfully";

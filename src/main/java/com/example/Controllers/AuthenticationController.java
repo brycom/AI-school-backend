@@ -2,7 +2,11 @@ package com.example.Controllers;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +21,7 @@ import com.example.Services.JwtService;
 
 @RequestMapping("/auth")
 @RestController
+@CrossOrigin("*")
 public class AuthenticationController {
 
     private final JwtService jwtService;
@@ -36,23 +41,29 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginUserDto loginUserDto,
+    public ResponseEntity<?> authenticate(@RequestBody LoginUserDto loginUserDto,
             HttpServletResponse response) {
-        User authenticatedUser = authenticationService.authenticate(loginUserDto);
+        try {
+            User authenticatedUser = authenticationService.authenticate(loginUserDto);
 
-        String jwtToken = jwtService.generateToken(authenticatedUser);
-        int expirationTime = (int) (jwtService.getExpirationTime() / 100);
+            String jwtToken = jwtService.generateToken(authenticatedUser);
+            int expirationTime = (int) (jwtService.getExpirationTime() / 100);
 
-        Cookie cookie = new Cookie("jwtToken", jwtToken);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(false);
-        cookie.setPath("/");
-        cookie.setMaxAge(expirationTime);
+            Cookie cookie = new Cookie("jwtToken", jwtToken);
+            cookie.setHttpOnly(true);
+            cookie.setSecure(false);
+            cookie.setPath("/");
+            cookie.setMaxAge(expirationTime);
 
-        response.addCookie(cookie);
+            response.addCookie(cookie);
 
-        LoginResponse loginResponse = new LoginResponse(jwtToken, jwtService.getExpirationTime());
-        return ResponseEntity.ok(loginResponse);
+            LoginResponse loginResponse = new LoginResponse(jwtToken, jwtService.getExpirationTime());
+            return ResponseEntity.ok(loginResponse);
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Fel användarnamn eller lösenord");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internt serverfel");
+        }
     }
 
 }

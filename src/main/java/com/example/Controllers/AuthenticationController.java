@@ -34,10 +34,14 @@ public class AuthenticationController {
     }
 
     @PostMapping("/create-account")
-    public ResponseEntity<User> register(@RequestBody RegisterUserDto registerUserDto) {
-        User registeredUser = authenticationService.signup(registerUserDto);
+    public ResponseEntity<?> register(@RequestBody RegisterUserDto registerUserDto) {
+        try {
+            User registeredUser = authenticationService.signup(registerUserDto);
 
-        return ResponseEntity.ok(registeredUser);
+            return ResponseEntity.ok(registeredUser);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("User already registered");
+        }
     }
 
     @PostMapping("/login")

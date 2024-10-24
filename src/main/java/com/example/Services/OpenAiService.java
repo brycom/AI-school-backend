@@ -18,6 +18,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -31,23 +32,36 @@ public class OpenAiService {
     private final ObjectMapper objectMapper = new ObjectMapper();
     private UserService userService;
     private AnswerService answerService;
+    private QuestionService questionService;
 
     public OpenAiService(RestTemplate restTemplate, UserService userService, QuestionRepository questionRepository,
-            AnswerService answerService) {
+            AnswerService answerService, QuestionService questionService) {
         this.restTemplate = restTemplate;
         this.userService = userService;
         this.questionRepository = questionRepository;
         this.answerService = answerService;
+        this.questionService = questionService;
     }
 
     public ChatRespons sendQuestion(Topic topic, Teacher teacher) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         UUID userId = userService.getUserIdFromUsername(username);
+        List<Question> lastTen = questionService.getLastTeenQuestions(userId, topic.getId());
         ChatRequest chatRequest = new ChatRequest("gpt-4o",
                 "Generera en " + topic.getTopic() + " fråga om " + topic.getDescription() + "med en svårighetsgrad på:"
                         + topic.getLevel() + "av 10. Frågan ska vara kort och inget svar ska ges ",
                 1,
                 teacher);
+
+        if (lastTen.size() > 0) {
+            System.out.println("Storleken på context listan: " + lastTen.size());
+            StringBuilder sb = new StringBuilder("här är några frågor du har ställt tidigare ställ inte dom igen:");
+            for (Question question : lastTen) {
+                sb.append("\n -").append(question.getQuestion());
+
+            }
+            chatRequest.addMessage(new Message("assistant", sb.toString()));
+        }
         ChatRespons respons = restTemplate.postForObject(openAiApiUrl, chatRequest, ChatRespons.class);
         Question question = new Question(topic.getId(), userId, respons.getChoices().get(0).getMessage().getContent(),
                 false);
@@ -75,7 +89,8 @@ public class OpenAiService {
         try {
             AiModelAnswer aiAnswer = objectMapper.readValue(respons.getChoices().get(0).getMessage().getContent(),
                     AiModelAnswer.class);
-            answerService.evaluetAnswer(aiAnswer, question.getQuestion());
+            answerService.evaluetAnswer(answer, aiAnswer, question.getQuestion());
+
         } catch (JsonMappingException e) {
             e.printStackTrace();
         } catch (JsonProcessingException e) {

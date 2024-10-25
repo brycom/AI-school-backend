@@ -18,7 +18,7 @@ public class QuestionService {
         this.questionRepository = questionRepository;
     }
 
-    public List<Question> getLastTeenQuestions(UUID userId, UUID topicId) {
+    public List<Question> getLastTenQuestions(UUID userId, UUID topicId) {
         List<Question> questions = questionRepository.findAllByUserIdAndTopicId(userId, topicId);
         if (questions.size() > 10) {
             return questions.subList(questions.size() - 10, questions.size());

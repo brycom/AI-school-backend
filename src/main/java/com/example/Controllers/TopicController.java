@@ -1,6 +1,5 @@
 package com.example.Controllers;
 
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,9 +30,6 @@ public class TopicController {
 
     @GetMapping("/allTopics")
     public Iterable<Topic> allTopics() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-
-        System.out.println("Här är den aktiva användaren: " + username);
         return topicService.getAllTopics();
     }
 

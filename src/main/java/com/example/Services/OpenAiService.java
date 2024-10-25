@@ -46,7 +46,7 @@ public class OpenAiService {
     public ChatRespons sendQuestion(Topic topic, Teacher teacher) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         UUID userId = userService.getUserIdFromUsername(username);
-        List<Question> lastTen = questionService.getLastTeenQuestions(userId, topic.getId());
+        List<Question> lastTen = questionService.getLastTenQuestions(userId, topic.getId());
         ChatRequest chatRequest = new ChatRequest("gpt-4o",
                 "Generera en " + topic.getTopic() + " fråga om " + topic.getDescription() + "med en svårighetsgrad på:"
                         + topic.getLevel() + "av 10. Frågan ska vara kort och inget svar ska ges ",

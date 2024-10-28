@@ -1,8 +1,8 @@
 package com.example.Controllers;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,12 +24,19 @@ public class ChatController {
     @Autowired
     private OpenAiService openAiService;
 
+    public ChatController(SimpMessagingTemplate messagingTemplate) {
+    }
+
     @PostMapping("/question")
-    public Message postQuestion(@RequestBody QuestionDto question) {
-
-        ChatRespons respons = openAiService.sendQuestion(question.getTopic(), question.getTeacher());
-
-        return respons.getChoices().get(0).getMessage();
+    public void handleQuestion(@RequestBody QuestionDto question) {
+        System.out.println("vald lärares namn:  " + question.getTeacher().getName());
+        openAiService.sendQuestionStream(question.getTopic(), question.getTeacher());
+        /*         String messageContent = respons.getChoices().get(0).getMessage().getContent();
+        System.out.println("Respons från OpenAI: " + messageContent);
+        
+        Map<String, String> message = new HashMap<>();
+        message.put("content", messageContent);
+        messagingTemplate.convertAndSend("/topic", message); */
     }
 
     @PostMapping("/answer")

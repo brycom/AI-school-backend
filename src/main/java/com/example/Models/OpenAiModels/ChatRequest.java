@@ -11,9 +11,9 @@ public class ChatRequest {
     private List<Message> messages;
     private int n;
     private Teacher teacher;
-    /* private List<Message> previeusMessages ; */
+    private boolean stream;
 
-    public ChatRequest(String model, String prompt, int n, Teacher teacher) {
+    public ChatRequest(String model, String prompt, int n, Teacher teacher, boolean stream) {
         this.model = model;
         this.messages = new ArrayList<>();
         this.teacher = teacher;
@@ -21,6 +21,7 @@ public class ChatRequest {
                 "Ditt namn är: " + this.teacher.getName() + " och du är " + this.teacher.getDescription()));
         this.messages.add(new Message("user", prompt));
         this.n = n;
+        this.stream = stream;
     }
 
     public String getModel() {
@@ -29,6 +30,14 @@ public class ChatRequest {
 
     public void setModel(String model) {
         this.model = model;
+    }
+
+    public boolean isStream() {
+        return stream;
+    }
+
+    public void setStream(boolean stream) {
+        this.stream = stream;
     }
 
     public List<Message> getMessages() {

@@ -1,17 +1,23 @@
 package com.example.Services;
 
-import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.example.Models.MembershipTear;
 import com.example.Models.User;
 import com.example.Models.Dtos.PaymentRequestDto;
+import com.example.Repositorys.MembershipTearRepository;
 import com.example.Repositorys.UserRepository;
 import com.stripe.Stripe;
 import com.stripe.model.Customer;
+import com.stripe.model.Event;
 import com.stripe.model.checkout.Session;
+import com.stripe.net.ApiResource;
 import com.stripe.param.CustomerCreateParams;
 import com.stripe.param.checkout.SessionCreateParams;
 
@@ -20,11 +26,16 @@ public class StripePaymentService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    private MembershipTearRepository tearsRepository;
+
     @Value("${stripe.api.key}")
     private String apiKey;
 
-    public String CreateCheckoutSession(User user, PaymentRequestDto request) {
+    public Map<String, String> CreateCheckoutSession(User user, PaymentRequestDto request) {
         Stripe.apiKey = apiKey;
+
+        Map<String, String> responseData = new HashMap<>();
 
         try {
 
@@ -35,17 +46,19 @@ public class StripePaymentService {
                     .setCancelUrl("http://localhost:5173/cancel")
                     .addLineItem(SessionCreateParams.LineItem.builder()
                             .setQuantity(1L)
-                            .setPrice("price_1QFBrjA7lbBlr7pVbx6BK9VU")
+                            .setPrice(request.getPaymentId())
                             .build())
                     .build();
             Session session = Session.create(params);
             // response.redirect(session.getUrl(), 303);
+            responseData.put("url", session.getUrl());
 
-            return session.getUrl();
+            return responseData;
 
         } catch (Exception e) {
             System.out.println("Failed to create checkout session: " + e.getMessage());
-            return "Failed to create checkout session";
+            //return "Failed to create checkout session";
+            return null;
         }
 
     }
@@ -72,29 +85,43 @@ public class StripePaymentService {
 
     }
 
-    //Stripe.apiKey = "sk_test_51QFB0TA7lbBlr7pVQPOsTmLVGwKctPRUeVNDm8C54p4NAutGUYvVu3Tn5EOJ49WIcuRxA1w6y6TPvauJOvGbfjnL00KV4Kmpkr";
+    public String CheckPayment(String paylode) {
 
-    /*     staticFiles.externalLocation(
-        Paths.get("public").toAbsolutePath().toString());
-    
-    post("/create-checkout-session", (request, response) -> {
-        String YOUR_DOMAIN = "http://localhost:4242";
-        SessionCreateParams params =
-          SessionCreateParams.builder()
-            .setMode(SessionCreateParams.Mode.PAYMENT)
-            .setSuccessUrl(YOUR_DOMAIN + "?success=true")
-            .setCancelUrl(YOUR_DOMAIN + "?canceled=true")
-            .addLineItem(
-              SessionCreateParams.LineItem.builder()
-                .setQuantity(1L)
-                // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-                .setPrice("price_1QFBrjA7lbBlr7pVbx6BK9VU")
-                .build())
-            .build();
-      Session session = Session.create(params);
-    
-      response.redirect(session.getUrl(), 303);
-      return "";
-    });
-     */
+        Stripe.apiKey = apiKey;
+
+        Event event = null;
+
+        try {
+            event = ApiResource.GSON.fromJson(paylode, Event.class);
+
+            if ("checkout.session.completed".equals(event.getType())) {
+                Session session = (Session) event.getData().getObject();
+                String customerEmail = session.getCustomerEmail();
+                String paymentStatus = session.getPaymentStatus();
+                int produktPrice = session.getAmountTotal().intValue();
+
+                System.out.println("Customer Email: " + customerEmail);
+                System.out.println("Payment Status: " + paymentStatus);
+                System.out.println("Produkt pris: " + produktPrice);
+                Optional<User> user = userRepository.findByEmail(customerEmail);
+                if (user.isPresent() && paymentStatus.equals("paid")) {
+                    MembershipTear tear = tearsRepository.findByPrice(produktPrice);
+                    user.get().setSubscription(tear.getPriceId());
+                    userRepository.save(user.get());
+                } else {
+                    System.out.println("Payment failed or user not found");
+                    return "Payment failed";
+                }
+
+            } else {
+                System.out.println("Unhandled event type: " + event.getType());
+            }
+        } catch (Exception e) {
+            System.out.println("Failed to parse event: " + e.getMessage());
+        }
+
+        return "Payment Successful";
+
+    }
+
 }

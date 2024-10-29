@@ -1,15 +1,15 @@
 package com.example.Models.Dtos;
 
-import com.example.Models.Subscription;
+import java.util.UUID;
 
 public class PaymentRequestDto {
 
     private String paymentId;
-    //private Subscription subscription;
+    private UUID tearId;
 
-    public PaymentRequestDto(String paymentId /* Subscription subscription */) {
+    public PaymentRequestDto(String paymentId, UUID tearId) {
         this.paymentId = paymentId;
-        //this.subscription = subscription;
+        this.tearId = tearId;
     }
 
     public PaymentRequestDto() {
@@ -23,12 +23,12 @@ public class PaymentRequestDto {
         this.paymentId = paymentId;
     }
 
-    /*     public Subscription getSubscription() {
-        return subscription;
+    public UUID getTearId() {
+        return tearId;
     }
-    
-    public void setSubscription(Subscription subscription) {
-        this.subscription = subscription;
+
+    public void setTearId(UUID tearId) {
+        this.tearId = tearId;
     }
-     */
+
 }

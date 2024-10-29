@@ -44,7 +44,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain) throws ServletException, IOException {
         String path = request.getRequestURI();
-        if (path.startsWith("/auth") || path.startsWith("/ws")) {
+        if (path.startsWith("/auth") || path.startsWith("/ws") || path.startsWith("/stripe/webhook")) {
             filterChain.doFilter(request, response);
             return;
         }

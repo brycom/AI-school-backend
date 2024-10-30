@@ -80,8 +80,6 @@ public class StripePaymentController {
     public ResponseEntity<String> handleStripeEvent(@RequestBody String payload) {
         try {
 
-            //System.out.println("Received Stripe webhook: " + payload);
-            //paymentService.CheckPayment(payload);
             String responseMessage = paymentService.CheckPayment(payload);
 
             return ResponseEntity.ok(responseMessage);

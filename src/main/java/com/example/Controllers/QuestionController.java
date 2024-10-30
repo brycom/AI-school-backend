@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.Models.Question;
 import com.example.Services.QuestionService;
 import com.example.Services.UserService;
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/questions")
@@ -29,14 +30,24 @@ public class QuestionController {
 
     @GetMapping("last-ten/{topic}")
     public List<Question> getLastTenQuestions(@PathVariable String topic) {
-        UUID topicId = UUID.fromString(topic);
 
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        UUID userId = userService.getUserIdFromUsername(username);
-        System.out.println("Här är den aktiva användaren: " + username);
-        List<Question> q = questionService.getLastTenQuestions(userId, topicId);
-        System.out.println(q.get(0).getQuestion());
-        return q;
+        try {
+            UUID topicId = UUID.fromString(topic);
+
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
+            UUID userId = userService.getUserIdFromUsername(username);
+            System.out.println("Här är den aktiva användaren: " + username);
+            List<Question> q = questionService.getLastTenQuestions(userId, topicId);
+            System.out.println(q.get(0).getQuestion());
+            return q;
+        } catch (Exception e) {
+            System.out.println("Fel: " + e.getMessage());
+            List<Question> error = new ArrayList<Question>();
+            Question q = new Question();
+            q.setQuestion(e.getMessage());
+            error.add(q);
+            return error;
+        }
     }
 
 }

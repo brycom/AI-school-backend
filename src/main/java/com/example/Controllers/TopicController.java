@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Models.Topic;
+import com.example.Services.JwtService;
 import com.example.Services.TopicService;
 
 @RestController
@@ -17,7 +18,7 @@ public class TopicController {
 
     public TopicService topicService;
 
-    public TopicController(TopicService toppicService) {
+    public TopicController(TopicService toppicService, JwtService jwtService) {
         this.topicService = toppicService;
     }
 

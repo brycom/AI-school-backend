@@ -1,5 +1,6 @@
 package com.example.Models;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,18 +15,18 @@ public class Question {
     private UUID id;
     private UUID topicId;
     private UUID userId;
+    @Column(columnDefinition = "longtext")
     private String question;
     private boolean Status;
 
-    public Question() {
-    }
-
-    public Question(UUID id, UUID topicId, UUID userId, String question, boolean status) {
-        this.id = id;
+    public Question(UUID topicId, UUID userId, String question, boolean status) {
         this.topicId = topicId;
         this.userId = userId;
         this.question = question;
         Status = status;
+    }
+
+    public Question() {
     }
 
     public UUID getId() {

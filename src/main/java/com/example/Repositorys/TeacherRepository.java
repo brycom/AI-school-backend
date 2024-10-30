@@ -8,4 +8,6 @@ public interface TeacherRepository extends CrudRepository<Teacher, Integer> {
 
     Teacher getTeacherByname(String name);
 
+    Iterable<Teacher> findByTopic(String topic);
+
 }

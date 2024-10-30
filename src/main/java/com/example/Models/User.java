@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import java.sql.Date;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -25,11 +26,11 @@ public class User implements UserDetails {
     private String username;
     @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
     private String name;
-    private UUID subscription;
+    private String subscription;
     private int score;
-    private String lastQuestion;
-    private String lastAnswer;
+    private Date endOfSubscription;
 
     public User(String email, String username, String password, String name) {
         this.email = email;
@@ -62,20 +63,12 @@ public class User implements UserDetails {
         return id;
     }
 
-    public String getLastQuestion() {
-        return lastQuestion;
+    public Date getEndOfSubscription() {
+        return endOfSubscription;
     }
 
-    public void setLastQuestion(String lastQuestion) {
-        this.lastQuestion = lastQuestion;
-    }
-
-    public String getLastAnswer() {
-        return lastAnswer;
-    }
-
-    public void setLastAnswer(String lastAnswer) {
-        this.lastAnswer = lastAnswer;
+    public void setEndOfSubscription(Date lastQuestion) {
+        this.endOfSubscription = lastQuestion;
     }
 
     public void setUsername(String username) {
@@ -90,11 +83,11 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public UUID getSubscription() {
+    public String getSubscription() {
         return subscription;
     }
 
-    public void setSubscription(UUID subscription) {
+    public void setSubscription(String subscription) {
         this.subscription = subscription;
     }
 

@@ -1,5 +1,6 @@
 package com.example.Models;
 
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,12 +17,16 @@ public class Teacher {
     private UUID id;
     private String name;
     private String description;
-    List<UUID> topic;
+    @ElementCollection
+    List<String> topic;
 
-    public Teacher(String name, String description, List<UUID> topic) {
+    public Teacher(String name, String description, List<String> topic) {
         this.name = name;
         this.description = description;
-        this.topic = new ArrayList<UUID>();
+        this.topic = new ArrayList<String>();
+    }
+
+    public Teacher() {
     }
 
     public UUID getId() {
@@ -48,12 +53,17 @@ public class Teacher {
         this.description = description;
     }
 
-    public List<UUID> getTopic() {
+    public List<String> getTopic() {
         return topic;
     }
 
-    public void setTopic(List<UUID> topic) {
+    public void setTopic(List<String> topic) {
         this.topic = topic;
+    }
+
+    public void addTopic(String topic) {
+        this.topic.add(topic);
+
     }
 
 }

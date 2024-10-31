@@ -76,7 +76,7 @@ public class StripePaymentController {
 
     @PostMapping(value = "/webhook", consumes = "application/json")
     public ResponseEntity<String> handleStripeEvent(@RequestBody String payload) {
-        System.out.println("hallå i stugan");
+        System.out.println("hallå i stugan!");
         try {
 
             String responseMessage = paymentService.CheckPayment(payload);

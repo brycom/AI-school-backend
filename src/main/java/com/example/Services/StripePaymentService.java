@@ -32,6 +32,9 @@ public class StripePaymentService {
     @Value("${stripe.api.key}")
     private String apiKey;
 
+    @Value("${stripe.webhook.key}")
+    private String webhookKey;
+
     public Map<String, String> CreateCheckoutSession(User user, PaymentRequestDto request) {
         Stripe.apiKey = apiKey;
 
@@ -87,13 +90,16 @@ public class StripePaymentService {
         System.out.println("Checking payment");
 
         Stripe.apiKey = apiKey;
+        System.out.println("Hook key: " + webhookKey);
+        System.out.println(
+                "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!_____________________________________________________!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
         Event event = null;
 
         try {
             event = ApiResource.GSON.fromJson(paylode, Event.class);
 
-            if ("checkout.session.completed".equals(event.getType())) {
+            if ("payment_intent.succeeded".equals(event.getType())) {
                 Session session = (Session) event.getData().getObject();
                 String customerEmail = session.getCustomerEmail();
                 String paymentStatus = session.getPaymentStatus();
@@ -114,6 +120,7 @@ public class StripePaymentService {
 
             } else {
                 System.out.println("Unhandled event type: " + event.getType());
+                System.out.println("Event:" + event.toString());
             }
         } catch (Exception e) {
             System.out.println("Failed to parse event: " + e.getMessage());

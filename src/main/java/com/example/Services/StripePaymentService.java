@@ -90,7 +90,7 @@ public class StripePaymentService {
         System.out.println("Checking payment");
 
         Stripe.apiKey = apiKey;
-        System.out.println("Hook key: " + webhookKey);
+        // System.out.println("Hook key: " + webhookKey);
         System.out.println(
                 "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!_____________________________________________________!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
@@ -101,7 +101,7 @@ public class StripePaymentService {
 
             if ("checkout.session.completed".equals(event.getType())) {
                 Session session = (Session) event.getData().getObject();
-                String customerEmail = session.getCustomerEmail();
+                String customerEmail = session.getCustomerDetails().getEmail();
                 String paymentStatus = session.getPaymentStatus();
                 int produktPrice = session.getAmountTotal().intValue();
 
@@ -110,7 +110,7 @@ public class StripePaymentService {
                 System.out.println("Produkt pris: " + produktPrice);
                 Optional<User> user = userRepository.findByEmail(customerEmail);
                 if (user.isPresent() && paymentStatus.equals("paid")) {
-                    MembershipTear tear = tearsRepository.findByPrice(produktPrice);
+                    MembershipTear tear = tearsRepository.findByPrice(69);
                     user.get().setSubscription(tear.getPriceId());
                     userRepository.save(user.get());
                 } else {

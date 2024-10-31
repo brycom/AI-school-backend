@@ -36,7 +36,7 @@ public class StripePaymentService {
         try {
             SessionCreateParams params = SessionCreateParams.builder()
                     .setMode(SessionCreateParams.Mode.PAYMENT)
-                    .setCustomer(user.getSubscription())
+                    .setCustomer(user.getCustumerNr())
                     .setSuccessUrl("https://whale-app-s5qc7.ondigitalocean.app/")
                     .setCancelUrl("https://whale-app-s5qc7.ondigitalocean.app/")
                     .addLineItem(SessionCreateParams.LineItem.builder()

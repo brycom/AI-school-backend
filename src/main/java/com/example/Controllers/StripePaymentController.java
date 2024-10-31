@@ -49,9 +49,10 @@ public class StripePaymentController {
         if (user == null) {
             return null;
         }
-        if (user.getSubscription() == null || user.getSubscription().isEmpty()) {
-            user.setSubscription(paymentService.CreateCustomer(user));
+        if (user.getCustumerNr() == null || user.getCustumerNr().isEmpty()) {
+            user.setCustumerNr(paymentService.CreateCustomer(user));
         }
+        //behöver både kundnummer och pris id 
 
         return paymentService.CreateCheckoutSession(user, request);
     }

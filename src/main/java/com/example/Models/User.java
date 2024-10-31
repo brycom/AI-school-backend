@@ -29,14 +29,16 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String name;
     private String subscription;
+    private String custumerNr;
     private int score;
     private Date endOfSubscription;
 
-    public User(String email, String username, String password, String name) {
+    public User(String email, String username, String password, String name, String custumerNr) {
         this.email = email;
         this.username = username;
         this.password = password;
         this.name = name;
+        this.custumerNr = custumerNr;
 
     }
 
@@ -61,6 +63,14 @@ public class User implements UserDetails {
 
     public UUID getId() {
         return id;
+    }
+
+    public String getCustumerNr() {
+        return custumerNr;
+    }
+
+    public void setCustumerNr(String custumerNr) {
+        this.custumerNr = custumerNr;
     }
 
     public Date getEndOfSubscription() {

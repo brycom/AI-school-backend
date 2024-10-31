@@ -35,16 +35,14 @@ public class StripePaymentController {
 
     @PostMapping("/payment")
     public Map<String, String> payWithStripe(@RequestBody PaymentRequestDto request) {
-        System.out.println("Hallå i stugan : " + request.getPaymentId());
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.getUserByUsername(username);
 
         if (request.getPaymentId().equals("")) {
-            System.out.println("Här ska det stå ingenting:" + request.getPaymentId());
             user.setSubscription("free");
             userRepository.save(user);
             Map<String, String> responseData = new HashMap<>();
-            responseData.put("url", "http://localhost:5173/topic-selector");
+            responseData.put("url", "https://whale-app-s5qc7.ondigitalocean.app/");
             return responseData;
 
         }
@@ -53,7 +51,6 @@ public class StripePaymentController {
         }
         if (user.getSubscription() == null) {
             user.setSubscription(paymentService.CreateCustomer(user));
-            System.out.println("Hallå i stugan!");
         }
 
         return paymentService.CreateCheckoutSession(user, request);

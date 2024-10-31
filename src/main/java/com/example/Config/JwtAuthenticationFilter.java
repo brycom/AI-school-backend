@@ -51,6 +51,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         Cookie[] cookies = request.getCookies();
         String jwt = null;
         if (cookies != null) {
+            System.out.println("Här händer det grejer med JWTs");
             for (Cookie cookie : cookies) {
                 if ("jwtToken".equals(cookie.getName())) {
                     jwt = cookie.getValue();
@@ -88,7 +89,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             response.getWriter().write("Invalid JWT signature");
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            System.out.println("Fel fel fel");
+            System.out.println("Fel fel fel i JWT skiten");
             e.printStackTrace();
             response.getWriter().write("Internal server error: " + e.getMessage());
         }

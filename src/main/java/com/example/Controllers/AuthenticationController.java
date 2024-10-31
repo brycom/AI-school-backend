@@ -57,6 +57,7 @@ public class AuthenticationController {
             cookie.setHttpOnly(true);
             cookie.setSecure(true);
             cookie.setPath("/");
+            cookie.setAttribute("SameSite", "None");
             cookie.setMaxAge(expirationTime);
 
             response.addCookie(cookie);

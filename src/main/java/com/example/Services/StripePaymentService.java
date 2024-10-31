@@ -2,18 +2,22 @@ package com.example.Services;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.example.Models.MembershipTear;
 import com.example.Models.User;
 import com.example.Models.Dtos.PaymentRequestDto;
 import com.example.Repositorys.MembershipTearRepository;
 import com.example.Repositorys.UserRepository;
 import com.stripe.Stripe;
 import com.stripe.model.Customer;
+import com.stripe.model.Event;
 import com.stripe.model.checkout.Session;
+import com.stripe.net.ApiResource;
 import com.stripe.param.CustomerCreateParams;
 import com.stripe.param.checkout.SessionCreateParams;
 
@@ -79,21 +83,22 @@ public class StripePaymentService {
 
     }
 
-    /*     public String CheckPayment(String paylode) {
-    
+    public String CheckPayment(String paylode) {
+        System.out.println("Checking payment");
+
         Stripe.apiKey = apiKey;
-    
+
         Event event = null;
-    
+
         try {
             event = ApiResource.GSON.fromJson(paylode, Event.class);
-    
+
             if ("checkout.session.completed".equals(event.getType())) {
                 Session session = (Session) event.getData().getObject();
                 String customerEmail = session.getCustomerEmail();
                 String paymentStatus = session.getPaymentStatus();
                 int produktPrice = session.getAmountTotal().intValue();
-    
+
                 System.out.println("Customer Email: " + customerEmail);
                 System.out.println("Payment Status: " + paymentStatus);
                 System.out.println("Produkt pris: " + produktPrice);
@@ -106,16 +111,16 @@ public class StripePaymentService {
                     System.out.println("Payment failed or user not found");
                     return "Payment failed";
                 }
-    
+
             } else {
                 System.out.println("Unhandled event type: " + event.getType());
             }
         } catch (Exception e) {
             System.out.println("Failed to parse event: " + e.getMessage());
         }
-    
+
         return "Payment Successful";
-    
-    } */
+
+    }
 
 }

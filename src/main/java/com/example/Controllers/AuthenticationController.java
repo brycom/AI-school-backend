@@ -90,18 +90,4 @@ public class AuthenticationController {
 
     }
 
-    @PostMapping("/webhook")
-    public ResponseEntity<String> handleStripeEvent(/* @RequestBody String payload */) {
-        System.out.println("hallå i stugan");
-        try {
-
-            //String responseMessage = paymentService.CheckPayment(payload);
-
-            return ResponseEntity.ok(/* responseMessage */"något händer iallafall");
-        } catch (Exception e) {
-            System.out.println("Error processing webhook: " + e.getMessage());
-            return ResponseEntity.status(500).body("Error processing webhook");
-        }
-    }
-
 }

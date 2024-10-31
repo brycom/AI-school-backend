@@ -34,6 +34,7 @@ public class AuthenticationService {
         user.setEmail(input.getEmail());
         user.setUsername(input.getUsername());
         user.setPassword(passwordEncoder.encode(input.getPassword()));
+        user.setSubscription("free");
 
         return userRepository.save(user);
     }

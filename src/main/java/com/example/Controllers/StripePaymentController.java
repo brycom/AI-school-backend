@@ -35,7 +35,7 @@ public class StripePaymentController {
 
     @PostMapping("/payment")
     public Map<String, String> payWithStripe(@RequestBody PaymentRequestDto request) {
-        System.out.println(request.getPaymentId());
+        System.out.println("Hallå i stugan : " + request.getPaymentId());
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.getUserByUsername(username);
 

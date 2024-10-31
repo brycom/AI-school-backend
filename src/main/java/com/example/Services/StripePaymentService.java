@@ -99,7 +99,7 @@ public class StripePaymentService {
         try {
             event = ApiResource.GSON.fromJson(paylode, Event.class);
 
-            if ("payment_intent.succeeded".equals(event.getType())) {
+            if ("checkout.session.completed".equals(event.getType())) {
                 Session session = (Session) event.getData().getObject();
                 String customerEmail = session.getCustomerEmail();
                 String paymentStatus = session.getPaymentStatus();

@@ -88,6 +88,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             response.getWriter().write("Invalid JWT signature");
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            System.out.println("Här händer det grejer som inte borde hända!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             response.getWriter().write("Internal server error: " + e.getMessage());
         }
     }

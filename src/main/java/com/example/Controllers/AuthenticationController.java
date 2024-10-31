@@ -55,7 +55,7 @@ public class AuthenticationController {
 
             Cookie cookie = new Cookie("jwtToken", jwtToken);
             cookie.setHttpOnly(true);
-            cookie.setSecure(false);
+            cookie.setSecure(true);
             cookie.setPath("/");
             cookie.setMaxAge(expirationTime);
 

@@ -8,7 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -72,6 +72,20 @@ public class StripePaymentController {
         }
 
         return "User created successfully";
+    }
+
+    @PostMapping(value = "/webhook", consumes = "application/json")
+    public ResponseEntity<String> handleStripeEvent(@RequestBody String payload) {
+        System.out.println("hallå i stugan");
+        try {
+
+            String responseMessage = paymentService.CheckPayment(payload);
+
+            return ResponseEntity.ok(responseMessage);
+        } catch (Exception e) {
+            System.out.println("Error processing webhook: " + e.getMessage());
+            return ResponseEntity.status(500).body("Error processing webhook");
+        }
     }
 
 }

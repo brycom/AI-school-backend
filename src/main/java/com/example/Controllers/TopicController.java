@@ -1,5 +1,6 @@
 package com.example.Controllers;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,6 +40,12 @@ public class TopicController {
             System.out.println("Ett fel uppstod: " + e.getMessage());
             return null;
         }
+    }
+
+    @GetMapping("/check")
+    public ResponseEntity<?> checkToken() {
+        return ResponseEntity.ok("Token is valid");
+
     }
 
 }

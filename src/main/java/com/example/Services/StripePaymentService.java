@@ -103,14 +103,14 @@ public class StripePaymentService {
                 Session session = (Session) event.getData().getObject();
                 String customerEmail = session.getCustomerDetails().getEmail();
                 String paymentStatus = session.getPaymentStatus();
-                int produktPrice = session.getAmountTotal().intValue();
+                int produktPrice = session.getAmountTotal().intValue() / 100;
 
                 System.out.println("Customer Email: " + customerEmail);
                 System.out.println("Payment Status: " + paymentStatus);
                 System.out.println("Produkt pris: " + produktPrice);
                 Optional<User> user = userRepository.findByEmail(customerEmail);
                 if (user.isPresent() && paymentStatus.equals("paid")) {
-                    MembershipTear tear = tearsRepository.findByPrice(69);
+                    MembershipTear tear = tearsRepository.findByPrice(produktPrice);
                     user.get().setSubscription(tear.getPriceId());
                     userRepository.save(user.get());
                 } else {

@@ -39,7 +39,7 @@ public class StripePaymentController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.getUserByUsername(username);
 
-        if (request.getPaymentId().equals("")) {
+        if (request.getPaymentId().equals("free")) {
             user.setSubscription("free");
             userRepository.save(user);
             Map<String, String> responseData = new HashMap<>();

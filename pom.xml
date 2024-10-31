@@ -95,11 +95,11 @@
 			<version>26.5.1</version>
 		</dependency>
 
-<!-- 		<dependency>
+		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 			<version>2.11.0</version>
-		</dependency> -->
+		</dependency>
 	
 	</dependencies>
 

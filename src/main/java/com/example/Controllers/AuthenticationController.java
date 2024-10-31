@@ -19,6 +19,7 @@ import com.example.Models.Dtos.LoginUserDto;
 import com.example.Models.Dtos.RegisterUserDto;
 import com.example.Services.AuthenticationService;
 import com.example.Services.JwtService;
+import com.example.Services.StripePaymentService;
 
 @RequestMapping("/auth")
 @RestController
@@ -28,10 +29,13 @@ public class AuthenticationController {
     private final JwtService jwtService;
 
     private final AuthenticationService authenticationService;
+    private final StripePaymentService paymentService;
 
-    public AuthenticationController(JwtService jwtService, AuthenticationService authenticationService) {
+    public AuthenticationController(JwtService jwtService, AuthenticationService authenticationService,
+            StripePaymentService paymentService) {
         this.jwtService = jwtService;
         this.authenticationService = authenticationService;
+        this.paymentService = paymentService;
     }
 
     @PostMapping("/create-account")
@@ -84,6 +88,20 @@ public class AuthenticationController {
         response.addCookie(cookie);
         return ResponseEntity.ok("Token is valid");
 
+    }
+
+    @PostMapping("/webhook")
+    public ResponseEntity<String> handleStripeEvent(@RequestBody String payload) {
+        System.out.println("hallå i stugan");
+        try {
+
+            String responseMessage = paymentService.CheckPayment(payload);
+
+            return ResponseEntity.ok(responseMessage);
+        } catch (Exception e) {
+            System.out.println("Error processing webhook: " + e.getMessage());
+            return ResponseEntity.status(500).body("Error processing webhook");
+        }
     }
 
 }

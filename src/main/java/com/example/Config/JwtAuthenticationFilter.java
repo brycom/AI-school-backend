@@ -44,7 +44,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain) throws ServletException, IOException {
         String path = request.getRequestURI();
-        if (path.startsWith("/auth") || path.startsWith("/ws") || path.startsWith("/stripe/webhook")) {
+        if (path.startsWith("/auth") || path.startsWith("/ws")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -88,7 +88,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             response.getWriter().write("Invalid JWT signature");
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            System.out.println("Här händer det grejer som inte borde hända!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            System.out.println("Fel fel fel");
+            e.printStackTrace();
             response.getWriter().write("Internal server error: " + e.getMessage());
         }
     }

@@ -30,7 +30,6 @@ public class ChatController {
 
     @PostMapping("/question")
     public void handleQuestion(@RequestBody QuestionDto question) {
-        System.out.println("vald lärares namn:  " + question.getTeacher().getName());
         ChatRespons respons = openAiService.sendQuestion(question.getTopic(), question.getTeacher());
         messagingTemplate.convertAndSend("/topic", respons.getChoices().get(0).getMessage().getContent());
     }

@@ -49,7 +49,7 @@ public class StripePaymentController {
         if (user == null) {
             return null;
         }
-        if (user.getSubscription() == null) {
+        if (user.getSubscription() == null || user.getSubscription().isEmpty()) {
             user.setSubscription(paymentService.CreateCustomer(user));
         }
 

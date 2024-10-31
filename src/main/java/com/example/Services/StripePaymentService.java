@@ -34,29 +34,34 @@ public class StripePaymentService {
 
     public Map<String, String> CreateCheckoutSession(User user, PaymentRequestDto request) {
         Stripe.apiKey = apiKey;
+        System.out.println("apiKey:" + apiKey);
 
         Map<String, String> responseData = new HashMap<>();
 
         try {
-
+            System.out.println("Kommer jag hit da?  " + request.getPaymentId());
             SessionCreateParams params = SessionCreateParams.builder()
                     .setMode(SessionCreateParams.Mode.PAYMENT)
                     .setCustomer(user.getSubscription())
-                    .setSuccessUrl("http://localhost:5173/success")
-                    .setCancelUrl("http://localhost:5173/cancel")
+                    .setSuccessUrl("http://localhost:5173/account")
+                    .setCancelUrl("http://localhost:5173/account")
                     .addLineItem(SessionCreateParams.LineItem.builder()
                             .setQuantity(1L)
                             .setPrice(request.getPaymentId())
                             .build())
                     .build();
+            System.out.println("Kommer jag hit da?  " + request.getPaymentId());
             Session session = Session.create(params);
-            // response.redirect(session.getUrl(), 303);
+            //response.redirect(session.getUrl(), 303);
+            System.out.println(session.getUrl());
             responseData.put("url", session.getUrl());
+            System.out.println("Nu har jag slut på ider");
 
             return responseData;
 
         } catch (Exception e) {
             System.out.println("Failed to create checkout session: " + e.getMessage());
+            e.printStackTrace();
             //return "Failed to create checkout session";
             return null;
         }
@@ -73,6 +78,7 @@ public class StripePaymentService {
 
         try {
             Customer customer = Customer.create(params);
+            System.out.println("hallå i stugan");
             System.out.println(customer);
             user.setSubscription(customer.getId());
             userRepository.save(user);

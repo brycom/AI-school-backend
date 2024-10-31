@@ -3,7 +3,6 @@ package com.example.Controllers;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,12 +48,12 @@ public class StripePaymentController {
             return responseData;
 
         }
-        System.out.println("Det här borde du inte se????");
         if (user == null) {
             return null;
         }
         if (user.getSubscription() == null) {
             user.setSubscription(paymentService.CreateCustomer(user));
+            System.out.println("Hallå i stugan!");
         }
 
         return paymentService.CreateCheckoutSession(user, request);
@@ -76,17 +75,17 @@ public class StripePaymentController {
         return "User created successfully";
     }
 
-    @PostMapping("/webhook")
+    /*     @PostMapping("/webhook")
     public ResponseEntity<String> handleStripeEvent(@RequestBody String payload) {
         try {
-
+    
             String responseMessage = paymentService.CheckPayment(payload);
-
+    
             return ResponseEntity.ok(responseMessage);
         } catch (Exception e) {
             System.out.println("Error processing webhook: " + e.getMessage());
             return ResponseEntity.status(500).body("Error processing webhook");
         }
-    }
+    } */
 
 }

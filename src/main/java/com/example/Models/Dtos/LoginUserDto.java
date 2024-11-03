@@ -10,6 +10,9 @@ public class LoginUserDto {
         this.password = password;
     }
 
+    public LoginUserDto() {
+    }
+
     public String getUsername() {
         return username;
     }

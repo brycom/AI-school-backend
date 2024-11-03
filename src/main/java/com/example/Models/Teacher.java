@@ -27,6 +27,7 @@ public class Teacher {
     }
 
     public Teacher() {
+        this.topic = new ArrayList<String>();
     }
 
     public UUID getId() {

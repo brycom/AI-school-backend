@@ -7,7 +7,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
 import com.example.Models.MembershipTear;
 import com.example.Models.User;
 import com.example.Models.Dtos.PaymentRequestDto;
@@ -100,6 +99,7 @@ public class StripePaymentService {
             event = ApiResource.GSON.fromJson(paylode, Event.class);
 
             if ("checkout.session.completed".equals(event.getType())) {
+                @SuppressWarnings("deprecation")
                 Session session = (Session) event.getData().getObject();
                 String customerEmail = session.getCustomerDetails().getEmail();
                 String paymentStatus = session.getPaymentStatus();

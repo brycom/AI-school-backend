@@ -14,6 +14,10 @@ public class RegisterUserDto {
         this.password = password;
     }
 
+    public RegisterUserDto() {
+
+    }
+
     public String getName() {
         return name;
     }

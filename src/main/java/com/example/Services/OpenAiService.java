@@ -1,7 +1,6 @@
 package com.example.Services;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -36,16 +35,14 @@ public class OpenAiService {
     private UserService userService;
     private AnswerService answerService;
     private QuestionService questionService;
-    private final SimpMessagingTemplate messagingTemplate;
 
     public OpenAiService(RestTemplate restTemplate, UserService userService, QuestionRepository questionRepository,
-            AnswerService answerService, QuestionService questionService, SimpMessagingTemplate messagingTemplate) {
+            AnswerService answerService, QuestionService questionService) {
         this.restTemplate = restTemplate;
         this.userService = userService;
         this.questionRepository = questionRepository;
         this.answerService = answerService;
         this.questionService = questionService;
-        this.messagingTemplate = messagingTemplate;
     }
 
     public ChatRespons sendQuestion(Topic topic, Teacher teacher) {
@@ -59,7 +56,6 @@ public class OpenAiService {
                 teacher, false);
 
         if (lastTen.size() > 0) {
-            System.out.println("Storleken på context listan: " + lastTen.size());
             StringBuilder sb = new StringBuilder("här är några frågor du har ställt tidigare ställ inte dom igen:");
             for (Question question : lastTen) {
                 sb.append("\n -").append(question.getQuestion());
@@ -88,7 +84,6 @@ public class OpenAiService {
                         "Var noggrann med att acceptera olika korrekta format (t.ex. 0,5 och 1/2).",
                 1,
                 teacher, false);
-        //chatRequest.addMessage(new Message("assistant", question.getQuestion()));
         ChatRespons respons = restTemplate.postForObject(openAiApiUrl, chatRequest, ChatRespons.class);
 
         try {

@@ -19,7 +19,6 @@ import com.example.Models.Dtos.LoginUserDto;
 import com.example.Models.Dtos.RegisterUserDto;
 import com.example.Services.AuthenticationService;
 import com.example.Services.JwtService;
-import com.example.Services.StripePaymentService;
 
 @RequestMapping("/auth")
 @RestController
@@ -29,13 +28,11 @@ public class AuthenticationController {
     private final JwtService jwtService;
 
     private final AuthenticationService authenticationService;
-    private final StripePaymentService paymentService;
 
-    public AuthenticationController(JwtService jwtService, AuthenticationService authenticationService,
-            StripePaymentService paymentService) {
+    public AuthenticationController(JwtService jwtService, AuthenticationService authenticationService) {
         this.jwtService = jwtService;
         this.authenticationService = authenticationService;
-        this.paymentService = paymentService;
+
     }
 
     @PostMapping("/create-account")
